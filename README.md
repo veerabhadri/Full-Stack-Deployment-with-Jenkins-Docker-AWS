@@ -302,8 +302,7 @@ This project successfully demonstrates:
 
 **David Ikundji**
 
-
-💼 LinkedIn: https://www.linkedin.com/in/davidikundji/
+**AWS Cloud & Devops Engineer**
 
 🐙 GitHub: https://github.com/davidikundji
 
