@@ -25,7 +25,7 @@ private_subnet_b_cidr = "10.0.4.0/24"
 
 key_name = "ikundji"
 
-jenkins_instance_type = "t3.micro"
+jenkins_instance_type = "t3.small"
 jenkins_volume_size   = 30
 
 ##############################################
@@ -45,7 +45,7 @@ frontend_memory = 512
 backend_cpu    = 256
 backend_memory = 1024
 
-ecs_desired_count = 0
+ecs_desired_count = 1
 
 ##############################################
 # Application Load Balancer
