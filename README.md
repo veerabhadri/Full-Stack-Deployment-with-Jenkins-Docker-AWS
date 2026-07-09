@@ -1,59 +1,312 @@
-# Overview
-This repository contains a React frontend, and an Express backend that the frontend connects to.
+# 🚀 Full-Stack Deployment with Jenkins, Docker & AWS
 
-# Objective
-Deploy the frontend and backend to somewhere publicly accessible over the internet. The AWS Free Tier should be more than sufficient to run this project, but you may use any platform and tooling you'd like for your solution.
+An end-to-end DevOps project demonstrating Infrastructure as Code (IaC), containerization, CI/CD automation, and cloud-native deployment using AWS.
 
-Fork this repo as a base. You may change any code in this repository to suit the infrastructure you build in this code challenge.
+---
 
-# Submission
-1. A github repo that has been forked from this repo with all your code.
-2. Modify this README file with instructions for:
-* Any tools needed to deploy your infrastructure
-* All the steps needed to repeat your deployment process
-* URLs to the your deployed frontend.
+# 📌 Project Overview
 
-# Evaluation
-You will be evaluated on the ease to replicate your infrastructure. This is a combination of quality of the instructions, as well as any scripts to automate the overall setup process.
+This project provisions and deploys a full-stack application on AWS using modern DevOps practices.
 
-# Setup your environment
-Install nodejs. Binaries and installers can be found on nodejs.org.
-https://nodejs.org/en/download/
+The application consists of:
 
-For macOS or Linux, Nodejs can usually be found in your preferred package manager.
-https://nodejs.org/en/download/package-manager/
+- **React Frontend**
+- **Node.js Backend API**
+- **Docker Containers**
+- **Amazon ECR** for image storage
+- **Amazon ECS Fargate** for container orchestration
+- **Application Load Balancer (ALB)** for traffic distribution
+- **Jenkins** for CI/CD automation
+- **Terraform** for Infrastructure as Code (IaC)
 
-Depending on the Linux distribution, the Node Package Manager `npm` may need to be installed separately.
+The entire deployment is fully automated. Any code pushed to GitHub can be built, containerized, and deployed to AWS through Jenkins.
 
-# Running the project
-The backend and the frontend will need to run on separate processes. The backend should be started first.
+---
+
+# 🏗️ Architecture
+
+![AWS Architecture](screenshots/architecture-diagram.png)
+
+---
+
+# ☁️ AWS Services Used
+
+- Amazon VPC
+- Public and Private Subnets
+- Internet Gateway
+- Security Groups
+- Amazon EC2 (Jenkins Server)
+- Amazon ECR
+- Amazon ECS Fargate
+- Application Load Balancer (ALB)
+- IAM Roles and Policies
+- CloudWatch Logs
+
+---
+
+# 🛠️ Technologies Used
+
+| Technology | Purpose |
+|------------|----------|
+| Terraform | Infrastructure as Code |
+| Jenkins | Continuous Integration & Continuous Deployment |
+| Docker | Containerization |
+| Amazon ECS Fargate | Container Orchestration |
+| Amazon ECR | Container Registry |
+| React | Frontend Application |
+| Node.js | Backend API |
+| Git & GitHub | Source Control |
+| AWS CLI | AWS Management |
+
+---
+
+# 📂 Project Structure
+
+```text
+Full-Stack-Deployment-with-Jenkins-Docker-AWS/
+│
+├── backend/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── index.js
+│
+├── frontend/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── src/
+│
+├── infra/
+│   ├── alb.tf
+│   ├── ecr.tf
+│   ├── ecs.tf
+│   ├── iam.tf
+│   ├── jenkins.tf
+│   ├── networking.tf
+│   ├── outputs.tf
+│   ├── provider.tf
+│   ├── security.tf
+│   ├── terraform.tfvars
+│   ├── variables.tf
+│   └── user-data/
+│       └── jenkins.sh
+│
+├── screenshots/
+├── Jenkinsfile
+└── README.md
 ```
-cd backend
-npm ci
-npm start
+
+---
+
+# 🚀 Deployment Workflow
+
+## 1. Developer Pushes Code
+
+```bash
+git add .
+git commit -m "Application update"
+git push origin main
 ```
-The backend should response to a GET request on `localhost:8080`.
 
-With the backend started, the frontend can be started.
+---
+
+## 2. Jenkins Pipeline Executes
+
+The pipeline automatically:
+
+- Pulls code from GitHub
+- Builds Docker images
+- Pushes images to Amazon ECR
+- Updates ECS services
+- Deploys the latest application version
+
+---
+
+## 3. Amazon ECS Fargate Deployment
+
+Amazon ECS:
+
+- Pulls images from ECR
+- Creates new tasks
+- Registers containers behind the ALB
+- Serves the application to end users
+
+---
+
+# 🔄 CI/CD Pipeline
+
+```text
+GitHub
+   ↓
+Jenkins
+   ↓
+Docker Build
+   ↓
+Amazon ECR
+   ↓
+Amazon ECS Fargate
+   ↓
+Application Load Balancer
+   ↓
+React Frontend → Node.js Backend API
 ```
-cd frontend
-npm ci
-npm start
+
+---
+
+# 📸 Project Screenshots
+
+## Jenkins Pipeline Successful Deployment
+
+![Jenkins Pipeline](screenshots/jenkins-success.png)
+
+---
+
+## ECS Services Running
+
+![ECS Services](screenshots/ecs-running.png)
+
+---
+
+## Application Successfully Deployed
+
+![Application](screenshots/frontend-running.png)
+
+---
+
+# 🌐 Live Application
+
+The application is deployed on Amazon ECS Fargate behind an Application Load Balancer.
+
+> **Note:** The ALB DNS name may change if the infrastructure is destroyed and recreated.
+
+Example:
+
+```text
+http://full-stack-deployment-alb-xxxxxxxx.us-east-1.elb.amazonaws.com
 ```
-The frontend can be accessed at `localhost:3000`. If the frontend successfully connects to the backend, a message saying "SUCCESS" followed by a guid should be displayed on the screen.  If the connection failed, an error message will be displayed on the screen.
 
-# Configuration
-The frontend has a configuration file at `frontend/src/config.js` that defines the URL to call the backend. This URL is used on `frontend/src/App.js#12`, where the front end will make the GET call during the initial load of the page.
+---
 
-The backend has a configuration file at `backend/config.js` that defines the host that the frontend will be calling from. This URL is used in the `Access-Control-Allow-Origin` CORS header, read in `backend/index.js#14`
+# 🔐 Security Implementations
 
-# Optional Extras
-The core requirement for this challenge is to get the provided application up and running for consumption over the public internet. That being said, there are some opportunities in this code challenge to demonstrate your skill sets that are above and beyond the core requirement.
+- IAM Roles for Jenkins and ECS Tasks
+- Least Privilege Access Model
+- Private ECS Subnets
+- Security Groups restricting access
+- Encrypted EBS volumes
+- CloudWatch centralized logging
 
-A few examples of extras for this coding challenge:
-1. Dockerizing the application
-2. Scripts to set up the infrastructure
-3. Providing a pipeline for the application deployment
-4. Running the application in a serverless environment
+---
 
-This is not an exhaustive list of extra features that could be added to this code challenge. At the end of the day, this section is for you to demonstrate any skills you want to show that’s not captured in the core requirement.
+# 📦 Docker Images
+
+The application uses two Docker containers.
+
+### Frontend
+
+```bash
+frontend:latest
+```
+
+### Backend
+
+```bash
+backend:latest
+```
+
+Images are stored in:
+
+```text
+Amazon Elastic Container Registry (ECR)
+```
+
+---
+
+# ⚙️ Terraform Deployment
+
+### Initialize Terraform
+
+```bash
+terraform init
+```
+
+### Review Changes
+
+```bash
+terraform plan
+```
+
+### Deploy Infrastructure
+
+```bash
+terraform apply
+```
+
+---
+
+# 🔄 Jenkins Pipeline Stages
+
+```text
+Checkout Source Code
+↓
+Login to Amazon ECR
+↓
+Build Frontend Image
+↓
+Build Backend Image
+↓
+Push Frontend Image
+↓
+Push Backend Image
+↓
+Deploy to ECS
+```
+
+---
+
+# 🎯 Project Outcome
+
+This project successfully demonstrates:
+
+✅ Infrastructure as Code using Terraform
+
+✅ Docker containerization
+
+✅ Continuous Integration and Continuous Deployment using Jenkins
+
+✅ Amazon ECS Fargate deployment
+
+✅ Application Load Balancer configuration
+
+✅ Automated image management with Amazon ECR
+
+✅ End-to-end DevOps automation on AWS
+
+---
+
+# 📚 Key Skills Demonstrated
+
+- AWS Cloud Engineering
+- DevOps Engineering
+- CI/CD Pipeline Design
+- Docker Containerization
+- Terraform Infrastructure Automation
+- Jenkins Administration
+- Amazon ECS Fargate
+- Application Load Balancing
+- IAM Security Best Practices
+- Git and GitHub Version Control
+
+---
+
+# 👨‍💻 Author
+
+**David Ikundji**
+
+
+💼 LinkedIn: https://www.linkedin.com/in/davidikundji/
+
+🐙 GitHub: https://github.com/davidikundji
+
+---
+
+⭐ If you found this project useful, feel free to star the repository!
